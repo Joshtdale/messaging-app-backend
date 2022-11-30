@@ -9,10 +9,11 @@ class CustomUser(AbstractUser):
         return self.username
 
 class Chat(models.Model):
-    name = models.CharField(max_length=15, null=False)
+    name = models.CharField(max_length=20, null=False)
 
-# class User_Chat(models.Model):
-#     user = m
+class User_Chat(models.Model):
+    chat = models.ForeignKey('Chat', on_delete=models.PROTECT, null=False)
+    user = models.ForeignKey('CustomUser', on_delete=models.PROTECT, null=False)
 
 class Message(models.Model):
     text = models.TextField(null=False)
