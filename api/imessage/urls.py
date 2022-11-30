@@ -4,7 +4,8 @@ from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register(r'customuser', CustomUserViewSet)
-router.register(r'Messages', MessageViewSet)
+router.register(r'messages', MessageViewSet)
+router.register(r'chats', ChatViewSet)
 
 
 urlpatterns = [

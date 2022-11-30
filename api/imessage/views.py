@@ -9,5 +9,13 @@ class CustomUserViewSet(ModelViewSet):
     serializer_class = CustomUserSerializer
 
 class MessageViewSet(ModelViewSet):
-    queryset = Message.objects.all()
+    queryset = Message.objects.all().order_by('timestamp')
     serializer_class = MessageSerializer
+
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
+
+class ChatViewSet(ModelViewSet):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
