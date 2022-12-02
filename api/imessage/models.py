@@ -19,4 +19,4 @@ class Message(models.Model):
     text = models.TextField(null=False)
     timestamp = models.CharField(max_length=30,null=True)
     user = models.ForeignKey('CustomUser', on_delete=models.PROTECT, null=True, blank=True)
-    chat = models.ForeignKey('Chat', on_delete=models.PROTECT, null=True)
+    chat = models.ForeignKey('Chat', on_delete=models.CASCADE, null=True)
