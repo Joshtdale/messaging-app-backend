@@ -1,6 +1,16 @@
 from django.db import models
 from django.db.models import IntegerField, Model
 from django.contrib.auth.models import AbstractUser
+import pusher
+
+# pusher_client = pusher.Pusher(
+#     app_id=u'1518560',
+#     key=u'1fb64f027f5f40e81a79',
+#     secret=u'1785068556fa75087922',
+#     cluster=u'us2'
+# )
+
+# pusher_client.trigger(u'my-channel', u'my-event', {u'message': u'hello world'})
 
 class CustomUser(AbstractUser):
     # birthday = models.DateField(null=True)

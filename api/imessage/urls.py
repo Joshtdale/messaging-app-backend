@@ -6,6 +6,8 @@ router = routers.SimpleRouter()
 router.register(r'customuser', CustomUserViewSet)
 router.register(r'messages', MessageViewSet)
 router.register(r'chats', ChatViewSet)
+# router.register(r'messages/pusher', push_feed)
+
 
 
 urlpatterns = [
