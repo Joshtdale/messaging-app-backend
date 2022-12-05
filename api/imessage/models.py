@@ -30,3 +30,8 @@ class Message(models.Model):
     timestamp = models.CharField(max_length=30,null=True)
     user = models.ForeignKey('CustomUser', on_delete=models.PROTECT, null=True, blank=True)
     chat = models.ForeignKey('Chat', on_delete=models.CASCADE, null=True)
+
+class FriendRequests(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.PROTECT, null=True)
+    # requestedUser = models.ForeignKey('CustomUser',related_name=CustomUser, on_delete=models.PROTECT, null=True)
+    status = models.IntegerField(default=0)
