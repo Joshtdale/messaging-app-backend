@@ -1,11 +1,32 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet, mixins, ViewSet
+from rest_framework import status, permissions, generics
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import *
 from .serializers import *
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from pusher import pusher_client, Pusher
 
-pusher = Pusher(app_id=u'1519175', key=u'8aff3c99d91668a780b1', secret=u'XXX_APP_SECRET', cluster=u'XXX_APP_CLUSTER')
+# from .serializers import CustomUserSerializer
+
+class UserCreate(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+    def post(self, request, format='json'):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserDetail(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
 
 class CustomUserViewSet(ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -26,22 +47,22 @@ class MessageViewSet(ModelViewSet):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
     
-    def post(self, request, *args, **kwargs):
+    # def post(self, request, *args, **kwargs):
         #  check if the method is post
-        if request.method == 'POST':
+        # if request.method == 'POST':
             # try form validation
             # form = DocumentForm(request.POST, request.FILES)
             # if form.is_valid():
             #     f = form.save()
                 # trigger a pusher request after saving the new feed element 
-                pusher.trigger("channel-1", "test_event", { message: "hello world" })
-                return HttpResponse('ok')
+                # pusher.trigger("channel-1", "test_event", { message: "hello world" })
+                # return HttpResponse('ok')
         # else:
                 # return a form not valid error
             # return HttpResponse('form not valid')
-        else:
+        # else:
             # return error, type isnt post
-            return HttpResponse('error, please try again')
+            # return HttpResponse('error, please try again')
 
 class ChatViewSet(ModelViewSet):
     queryset = Chat.objects.all()
@@ -51,19 +72,45 @@ class ChatViewSet(ModelViewSet):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 
-# def push_feed(request):
-#     # check if the method is post
-#     if request.method == 'POST':
-#         # try form validation
-#         form = DocumentForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             f = form.save()
-#             # trigger a pusher request after saving the new feed element 
-#             pusher.trigger(u'a_channel', u'an_event', {u'description': f.description, u'document': f.document.url})
-#             return HttpResponse('ok')
-#         else:
-#             # return a form not valid error
-#             return HttpResponse('form not valid')
-#     else:
-#         # return error, type isnt post
-#         return HttpResponse('error, please try again')
+    def post(self, request, *args, **kwargs):
+        pusher_client = pusher.Pusher(
+            app_id=u'1518560', 
+            key=u'1fb64f027f5f40e81a79', 
+            secret=u'1785068556fa75087922', 
+            cluster=u'us2'
+        )
+        pusher.trigger(
+            'imclone_channel', 
+            "chat_group_" + chat_id, 
+        {
+            "message": {
+                "id": idTime,
+                'text': message_body,
+                "user": {
+                        "id": posted_by_id
+                        },
+                'chat': {
+                    chat_id
+                }
+            }
+        }
+        # "timestamp": idTime
+        # 'posted_by': posted_by_id,
+        )
+
+            # "text": text,
+            #     "user": {
+            #         "id": user
+            #     },
+            #     "chat": {
+            #         "id": chat
+            #     },
+            #     "timestamp": idTime
+
+class FriendRequestViewSet(ModelViewSet):
+    queryset = FriendRequest.objects.all()
+    serializer_class = FriendRequestSerializer
+
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
