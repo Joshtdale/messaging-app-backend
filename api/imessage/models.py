@@ -14,12 +14,14 @@ import pusher
 
 class CustomUser(AbstractUser):
     # birthday = models.DateField(null=True)
+    extra_kwargs = {'password': {'write_only': True}}
 
     def __str__(self):
         return self.username
 
 class Chat(models.Model):
     name = models.CharField(max_length=20, null=False)
+    # users = models.ManyToManyField('CustomUser')
 
 class User_Chat(models.Model):
     chat = models.ForeignKey('Chat', on_delete=models.PROTECT, null=False)

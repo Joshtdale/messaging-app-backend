@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet, mixins, ViewSet
-from rest_framework import status, permissions, generics
+from rest_framework import status, permissions, generics, filters
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import *
 from .serializers import *
@@ -50,9 +50,10 @@ class MessageViewSet(ModelViewSet):
     
 
 class ChatViewSet(ModelViewSet):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
+
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
