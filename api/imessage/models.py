@@ -14,6 +14,7 @@ import pusher
 
 class CustomUser(AbstractUser):
     # birthday = models.DateField(null=True)
+    extra_kwargs = {'password': {'write_only': True}}
 
     def __str__(self):
         return self.username

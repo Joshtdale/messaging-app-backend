@@ -50,7 +50,7 @@ class MessageViewSet(ModelViewSet):
     
 
 class ChatViewSet(ModelViewSet):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
 
