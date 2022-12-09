@@ -61,7 +61,7 @@ class CustomManyToManyField(serializers.RelatedField):
 
         super().__init__(**kwargs)
 
- 
+
     def to_representation(self, model):
         return getattr(model, self.field_name)
 
