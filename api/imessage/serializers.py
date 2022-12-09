@@ -3,15 +3,37 @@ from .models import *
 from .fields import *
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    # some_relationship_fk = SomeRelationshipSerializer(required=False)   
+    # email = serializers.EmailField(
+    #     required=True
+    # )
+    # username = serializers.CharField()
+    # password = serializers.CharField(min_length=8, write_only=True)
+    
     class Meta:
         model = CustomUser
+        fields = ('email', 'username', 'password', 'first_name', 'last_name')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)  # as long as the fields are the same, we can just use this
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    user = UserField(queryset=CustomUser.objects.all())
+    requestedUser = UserField(queryset=CustomUser.objects.all())
+
+    class Meta:
+        model = FriendRequest
         fields = (
-            'email',
-            'username',
-            'first_name',
-            
-    ) 
+            'user',
+            'requestedUser',
+            'status'
+        ) 
 
 class ChatSerializer(serializers.ModelSerializer):
 
