@@ -33,6 +33,7 @@ class CustomUserViewSet(ModelViewSet):
     serializer_class = CustomUserSerializer
 
 class MessageViewSet(ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Message.objects.all().order_by('timestamp')
     serializer_class = MessageSerializer
     def post(self, request):
@@ -47,24 +48,9 @@ class MessageViewSet(ModelViewSet):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
     
-    # def post(self, request, *args, **kwargs):
-        #  check if the method is post
-        # if request.method == 'POST':
-            # try form validation
-            # form = DocumentForm(request.POST, request.FILES)
-            # if form.is_valid():
-            #     f = form.save()
-                # trigger a pusher request after saving the new feed element 
-                # pusher.trigger("channel-1", "test_event", { message: "hello world" })
-                # return HttpResponse('ok')
-        # else:
-                # return a form not valid error
-            # return HttpResponse('form not valid')
-        # else:
-            # return error, type isnt post
-            # return HttpResponse('error, please try again')
 
 class ChatViewSet(ModelViewSet):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
 
