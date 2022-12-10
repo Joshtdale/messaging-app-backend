@@ -6,7 +6,7 @@ from .models import *
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from pusher import pusher_client, Pusher
+
 
 # from .serializers import CustomUserSerializer
 
@@ -36,33 +36,6 @@ class MessageViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Message.objects.all().order_by('id')
     serializer_class = MessageSerializer
-    http_method_names = ['get','post','put','delete']
-    
-    def post(self, request):
-        obj = Messages.objects.filter(is_deleted=False,parent=None).order_by('-timestamp')[:10]
-        last_message = obj.last()
-        print(request)
-        pusher.trigger(
-            'imclone_channel', 
-            "chat_group_" + request.chat.id, 
-        {
-            
-            "id": last_message.id,
-            "text": request.text,
-            "user": {
-                "id": request.user.id,
-                "name": request.user.name
-            },
-            "timestamp": last_message.timestamp,
-            "chat": {
-                "id": request.chat.id,
-                "name": request.chat.name
-            }
-        }
-            
-        )
-        return Response([])
-
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
