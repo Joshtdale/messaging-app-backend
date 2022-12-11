@@ -21,7 +21,7 @@ class CustomUser(AbstractUser):
 
 class Chat(models.Model):
     name = models.CharField(max_length=20, null=False)
-    # users = models.ManyToManyField('CustomUser')
+    user = models.ManyToManyField('CustomUser')
 
 class User_Chat(models.Model):
     chat = models.ForeignKey('Chat', on_delete=models.PROTECT, null=False)

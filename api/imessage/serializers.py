@@ -36,7 +36,7 @@ class FriendRequestSerializer(serializers.ModelSerializer):
         ) 
 
 class ChatSerializer(serializers.ModelSerializer):
-
+    # user = UserField(queryset=CustomUser.objects.all())
     class Meta:
         model = Chat
         fields = '__all__'

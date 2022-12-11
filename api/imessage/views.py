@@ -52,31 +52,31 @@ class ChatViewSet(ModelViewSet):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        pusher_client = pusher.Pusher(
-            app_id=u'1518560', 
-            key=u'1fb64f027f5f40e81a79', 
-            secret=u'1785068556fa75087922', 
-            cluster=u'us2'
-        )
-        pusher.trigger(
-            'imclone_channel', 
-            "chat_group_" + chat_id, 
-        {
-            "message": {
-                "id": idTime,
-                'text': message_body,
-                "user": {
-                        "id": posted_by_id
-                        },
-                'chat': {
-                    chat_id
-                }
-            }
-        }
-        # "timestamp": idTime
-        # 'posted_by': posted_by_id,
-        )
+    # def post(self, request, *args, **kwargs):
+    #     pusher_client = pusher.Pusher(
+    #         app_id=u'1518560', 
+    #         key=u'1fb64f027f5f40e81a79', 
+    #         secret=u'1785068556fa75087922', 
+    #         cluster=u'us2'
+    #     )
+    #     pusher.trigger(
+    #         'imclone_channel', 
+    #         "chat_group_" + chat_id, 
+    #     {
+    #         "message": {
+    #             "id": idTime,
+    #             'text': message_body,
+    #             "user": {
+    #                     "id": posted_by_id
+    #                     },
+    #             'chat': {
+    #                 chat_id
+    #             }
+    #         }
+    #     }
+    #     # "timestamp": idTime
+    #     # 'posted_by': posted_by_id,
+    #     )
 
 
 class FriendRequestViewSet(ModelViewSet):
