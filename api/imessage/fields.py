@@ -8,7 +8,8 @@ class UserField(serializers.RelatedField):
     def to_representation(self, value):
         return {
             "id": value.id,
-            "name": value.username
+            "username": value.username,
+            "name": value.first_name
 
         }
 
