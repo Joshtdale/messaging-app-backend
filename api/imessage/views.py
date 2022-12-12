@@ -6,6 +6,9 @@ from .models import *
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django_filters import Filter, filters
+from .filters import *
+from rest_framework import status, generics
 
 
 # from .serializers import CustomUserSerializer
@@ -28,12 +31,16 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
+
 class CustomUserViewSet(ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
 class MessageViewSet(ModelViewSet):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Message.objects.all().order_by('id')
     serializer_class = MessageSerializer
 
@@ -44,8 +51,22 @@ class MessageViewSet(ModelViewSet):
 
 class ChatViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = Chat.objects.all()
+    # queryset = Chat.objects.all()
     serializer_class = ChatSerializer
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['filter'] = ChatFilter(self.request.GET)
+
+    def get_queryset(self):
+        queryset = Chat.objects.filter(user__id=self.request.user.id)
+        return queryset
+
+    # class ChatUserViewSet(ModelViewSet):
+    #     permission_classes = (permissions.IsAuthenticated,)
+    #     queryset = Chat.objects.all()
+    #     # queryset = Chat.objects.filter(user__container=[13])
+    #     serializer_class = ChatSerializer
 
 
     def update(self, request, *args, **kwargs):
@@ -80,8 +101,17 @@ class ChatViewSet(ModelViewSet):
 
 
 class FriendRequestViewSet(ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = FriendRequest.objects.all()
     serializer_class = FriendRequestSerializer
+
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
+
+class User_ChatViewSet(ModelViewSet):
+    queryset = User_Chat.objects.all()
+    serializer_class = User_ChatSerializer
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
