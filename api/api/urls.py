@@ -22,3 +22,7 @@ urlpatterns = [
     path('api/', include('imessage.urls')),
     # re_path(r'^push_feed$', push_feed),
 ]
+
+from django.conf.urls.static import static
+from django.conf import settings
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
