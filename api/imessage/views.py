@@ -66,6 +66,7 @@ class ChatViewSet(ModelViewSet):
         queryset = Chat.objects.filter(user__id=self.request.user.id)
         return queryset
 
+
     # class ChatUserViewSet(ModelViewSet):
     #     permission_classes = (permissions.IsAuthenticated,)
     #     queryset = Chat.objects.all()
@@ -77,6 +78,14 @@ class ChatViewSet(ModelViewSet):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 
+class ChatUpdateViewSet(ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
     # def post(self, request, *args, **kwargs):
     #     pusher_client = pusher.Pusher(
     #         app_id=u'1518560', 

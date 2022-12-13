@@ -6,7 +6,7 @@ from rest_framework_simplejwt import views as jwt_views
 router = routers.SimpleRouter()
 router.register(r'customuser', CustomUserViewSet)
 router.register(r'messages', MessageViewSet)
-# router.register(r'chats', ChatViewSet, basename='Chat')
+router.register(r'groups', ChatUpdateViewSet)
 router.register(r'friends', FriendRequestViewSet)
 router.register(r'userchat', User_ChatViewSet)
 router.register(r'users', UserViewSet)
