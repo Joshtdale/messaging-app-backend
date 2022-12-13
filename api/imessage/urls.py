@@ -9,8 +9,7 @@ router.register(r'messages', MessageViewSet)
 # router.register(r'chats', ChatViewSet, basename='Chat')
 router.register(r'friends', FriendRequestViewSet)
 router.register(r'userchat', User_ChatViewSet)
-
-# router.register(r'chats', viewset)
+router.register(r'users', UserViewSet)
 # router.register(r'messages/pusher', push_feed)
 
 

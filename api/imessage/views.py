@@ -35,6 +35,10 @@ class UserDetail(generics.RetrieveAPIView):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 
+class UserViewSet(ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+
 class CustomUserViewSet(ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
